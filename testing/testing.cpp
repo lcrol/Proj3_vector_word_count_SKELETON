@@ -242,7 +242,7 @@ int run_all_test(){
 	test_ProcessLine();
 	test_File_OpenClose();
 	test_system();
-	remove_file_debris();
+	//remove_file_debris();
 	return total_points;
 }
 

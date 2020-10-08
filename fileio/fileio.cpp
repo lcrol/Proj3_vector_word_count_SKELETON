@@ -41,12 +41,12 @@ int writetoFile(std::vector<constants::entry>  &entries, const std::string &outp
 	std::ofstream my_ofile;
 	my_ofile.open(outputfilename);
 		if(!my_ofile.is_open())
-			return constants::FAIL_FILE_DID_NOT_OPEN;
+			return constants::FAIL;
 
-		for(size_t i=0; i<entries.size(); i++)
+	for(int i=0; i<entries.size(); i++){
 			my_ofile<<entries[i].word<<" "<<entries[i].number_occurences<<std::endl;
-
-		return constants::SUCCESS;
+	}
+	return constants::SUCCESS;
 
 }
 

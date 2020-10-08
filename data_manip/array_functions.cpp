@@ -56,7 +56,11 @@ namespace KP {
 		if(!myfstream.is_open())
 				return false;
 
-		//TODO
+		string line;
+		while(!myfstream.eof()){
+			getline(myfstream, line);
+			processLine(entries, line);
+		}
 
 		return true;
 	}
@@ -65,12 +69,13 @@ namespace KP {
 	 feed each token to processToken for recording*/
 	void processLine(std::vector<constants::entry> &entries,std::string &myString)
 	{
+		string token;
 		stringstream iss(myString);
-		while(iss){
-			string token;
-			iss >> token;
+		while(!iss.eof()){
+			getline(iss, token, constants::CHAR_TO_SEARCH_FOR);
 			processToken(entries, token);
 		}
+
 	}
 
 	/*takes and input token and updates how many times it has been seen*/
@@ -80,6 +85,7 @@ namespace KP {
 		token = trim(token, "\r");
 		token = trim(token, ".\r");
 		token = trim(token, ".");
+		token = trim(token, ",");
 
 		if(token == "")
 			return;
@@ -109,9 +115,7 @@ namespace KP {
 	 * See the course lectures and demo project for how to sort a vector of structs
 	 */
 	void sort(vector<entry> &entries, sortOrder so) {
-		if (so == NONE) {
-			return;
-		} else if (so == ASCENDING) {
+		if (so == ASCENDING) {
 			sort(entries.begin(), entries.end(), compareNameAsc);
 		} else if (so == DESCENDING) {
 			sort(entries.begin(), entries.end(), compareNameDec);
@@ -122,14 +126,14 @@ namespace KP {
 
 	//utils
 	bool compareNameAsc(const entry &thisEntry, const entry &otherEntry) {
-		return thisEntry.word < otherEntry.word;
+		return thisEntry.word_uppercase <= otherEntry.word_uppercase;
 	}
 	bool compareNameDec(const entry &thisEntry, const entry &otherEntry) {
-		return thisEntry.word > otherEntry.word;
+		return thisEntry.word_uppercase >= otherEntry.word_uppercase;
 	}
 	bool compareNumberOfOccurances(const entry &thisEntry,
 			const entry &otherEntry) {
-		return thisEntry.number_occurences > otherEntry.number_occurences;
+		return thisEntry.number_occurences >= otherEntry.number_occurences;
 	}
 
 	string trim(const string& str, const string& whitespace)
